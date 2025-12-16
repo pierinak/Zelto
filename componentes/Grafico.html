@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Preços Moderno</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .chart-bar {
+            transition: all 0.3s ease;
+            transform-origin: bottom;
+        }
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            transform: translate(-50%, -100%);
+            z-index: 10;
+            min-width: 120px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .price-label {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: bold;
+            color: #374151;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 4px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .chart-bar:hover .price-label {
+            opacity: 1;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.8; transform: scaleY(1.05); }
+            100% { opacity: 1; transform: scaleY(1); }
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="gradient-bg p-6 rounded-xl">
+            <div class="max-w-7xl mx-auto">
+                <!-- Price Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Análise de Preços</h3>
+                            <div class="flex items-center mt-2">
+                                <span class="text-sm text-gray-600 mr-2">Último preço:</span>
+                                <span id="current-price" class="text-lg font-bold text-blue-600">Carregando...</span>
+                                <span id="price-change" class="ml-2 text-sm px-2 py-1 rounded"></span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 mt-4 md:mt-0">
+                            <button data-range="7" class="px-3 py-1 text-xs bg-gray-100 rounded-md hover:bg-gray-200 transition">1W</button>
+                            <button data-range="30" class="px-3 py-1 text-xs bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">1M</button>
+                            <button data-range="90" class="px-3 py-1 text-xs bg-gray-100 rounded-md hover:bg-gray-200 transition">3M</button>
+                            <button data-range="180" class="px-3 py-1 text-xs bg-gray-100 rounded-md hover:bg-gray-200 transition">6M</button>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="h-80 p-4 rounded-lg relative">
+                            <!-- Price scale on the left -->
+                            <div id="price-scale" class="absolute left-0 top-0 bottom-0 w-10 flex flex-col justify-between text-xs text-gray-500 pr-2">
+                                <!-- Will be filled by JavaScript -->
+                            </div>
+                            
+                            <div id="chart-container" class="flex items-end h-full space-x-1 relative ml-10">
+                                <!-- Chart bars will be inserted here by JavaScript -->
+                            </div>
+                            <div id="chart-tooltip" class="tooltip"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs text-gray-500 ml-10">
+                            <span id="start-date">Carregando...</span>
+                            <span id="end-date">Hoje</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex flex-col sm:flex-row justify-between items-center">
+                        <div class="text-xs text-gray-500 flex items-center">
+                            <i class="fas fa-sync-alt mr-1 text-gray-400"></i>
+                            <span>Atualizado </span>
+                            <span id="last-updated" class="ml-1 font-medium"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated API for price data
+        class PriceAPI {
+            constructor() {
+                this.basePrice = 100;
+                this.history = [];
+                this.lastPrice = null;
+                this.generateInitialData();
+                this.simulateRealTimeUpdates();
+            }
+            
+            generateInitialData() {
+                // Generate 180 days of historical data
+                const now = new Date();
+                for (let i = 180; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    
+                    // Random price movement with some volatility
+                    const volatility = 0.5 + Math.random() * 2;
+                    const change = (Math.random() - 0.5) * volatility;
+                    this.basePrice = this.basePrice * (1 + change/100);
+                    
+                    // Ensure price stays positive
+                    this.basePrice = Math.max(0.1, this.basePrice);
+                    
+                    this.history.push({
+                        date: date,
+                        price: parseFloat(this.basePrice.toFixed(2)),
+                        volume: Math.floor(Math.random() * 10000) + 1000
+                    });
+                }
+                this.lastPrice = this.history[this.history.length - 1].price;
+            }
+            
+            simulateRealTimeUpdates() {
+                // Update price every 3-8 seconds
+                setInterval(() => {
+                    const change = (Math.random() - 0.15) * 0.5; // Slightly positive bias
+                    const newPrice = this.basePrice * (1 + change/100);
+                    this.basePrice = Math.max(0.1, newPrice);
+                    
+                    // Add to history
+                    const now = new Date();
+                    
+                    this.history.push({
+                        date: now,
+                        price: parseFloat(this.basePrice.toFixed(2)),
+                        volume: Math.floor(Math.random() * 10000) + 1000
+                    });
+                    
+                    // Keep only last 180 days
+                    if (this.history.length > 180) {
+                        this.history.shift();
+                    }
+                    
+                    // Calculate price change
+                    const priceChange = ((this.basePrice - this.lastPrice) / this.lastPrice) * 100;
+                    this.lastPrice = this.basePrice;
+                    
+                    // Update UI
+                    if (this.onUpdate) {
+                        this.onUpdate(this.history, priceChange);
+                    }
+                }, 3000 + Math.random() * 5000);
+            }
+            
+            getPriceData(days = 30) {
+                const now = new Date();
+                const cutoff = new Date(now);
+                cutoff.setDate(cutoff.getDate() - days);
+                
+                // Filter history to requested time period
+                const filtered = this.history.filter(entry => entry.date >= cutoff);
+                
+                // For longer periods, sample data to avoid too many points
+                if (days > 30) {
+                    const sampleInterval = Math.ceil(filtered.length / 50);
+                    return filtered.filter((_, index) => index % sampleInterval === 0);
+                }
+                
+                return filtered;
+            }
+        }
+        
+        // Chart Controller
+        class PriceChart {
+            constructor() {
+                this.api = new PriceAPI();
+                this.currentRange = 30;
+                this.initElements();
+                this.setupEventListeners();
+                this.subscribeToAPI();
+                this.updateChart();
+            }
+            
+            initElements() {
+                this.elements = {
+                    chartContainer: document.getElementById('chart-container'),
+                    chartTooltip: document.getElementById('chart-tooltip'),
+                    startDate: document.getElementById('start-date'),
+                    endDate: document.getElementById('end-date'),
+                    rangeButtons: document.querySelectorAll('[data-range]'),
+                    currentPrice: document.getElementById('current-price'),
+                    priceChange: document.getElementById('price-change'),
+                    priceScale: document.getElementById('price-scale'),
+                    lastUpdated: document.getElementById('last-updated')
+                };
+            }
+            
+            setupEventListeners() {
+                // Range buttons
+                this.elements.rangeButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        this.currentRange = parseInt(button.dataset.range);
+                        this.elements.rangeButtons.forEach(btn => {
+                            btn.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                            btn.classList.add('bg-gray-100', 'hover:bg-gray-200');
+                        });
+                        button.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+                        button.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                        this.updateChart();
+                    });
+                });
+            }
+            
+            subscribeToAPI() {
+                this.api.onUpdate = (history, priceChange) => {
+                    this.updateCurrentPrice(history[history.length - 1].price, priceChange);
+                    this.updateChart();
+                    this.updateLastUpdatedTime();
+                };
+            }
+            
+            updateCurrentPrice(price, change) {
+                this.elements.currentPrice.textContent = `$${price.toFixed(2)}`;
+                
+                const changeElement = this.elements.priceChange;
+                changeElement.textContent = `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
+                
+                if (change > 0) {
+                    changeElement.className = 'ml-2 text-sm px-2 py-1 rounded bg-green-100 text-green-800';
+                } else if (change < 0) {
+                    changeElement.className = 'ml-2 text-sm px-2 py-1 rounded bg-red-100 text-red-800';
+                } else {
+                    changeElement.className = 'ml-2 text-sm px-2 py-1 rounded bg-gray-100 text-gray-800';
+                }
+            }
+            
+            updateLastUpdatedTime() {
+                const now = new Date();
+                this.elements.lastUpdated.textContent = now.toLocaleTimeString('pt-BR', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+            
+            updateChart() {
+                const data = this.api.getPriceData(this.currentRange);
+                if (data.length === 0) return;
+                
+                // Clear existing chart
+                this.elements.chartContainer.innerHTML = '';
+                this.elements.priceScale.innerHTML = '';
+                
+                // Calculate chart dimensions
+                const containerHeight = this.elements.chartContainer.clientHeight;
+                const containerWidth = this.elements.chartContainer.clientWidth - 40; // account for scale
+                const barCount = data.length;
+                const barWidth = Math.min(12, (containerWidth - barCount) / barCount);
+                
+                // Find min/max prices for scaling
+                const prices = data.map(entry => entry.price);
+                const minPrice = Math.min(...prices);
+                const maxPrice = Math.max(...prices);
+                const priceRange = maxPrice - minPrice;
+                
+                // Find max volume for scaling
+                const volumes = data.map(entry => entry.volume);
+                const maxVolume = Math.max(...volumes);
+                
+                // Create price scale
+                const scaleSteps = 5;
+                for (let i = 0; i <= scaleSteps; i++) {
+                    const priceValue = minPrice + (priceRange * (i / scaleSteps));
+                    const scaleLabel = document.createElement('div');
+                    scaleLabel.className = 'text-right';
+                    scaleLabel.textContent = priceValue.toFixed(2);
+                    this.elements.priceScale.appendChild(scaleLabel);
+                }
+                
+                // Create bars
+                data.forEach((entry, index) => {
+                    // Calculate bar height based on price
+                    const priceHeight = priceRange > 0 
+                        ? ((entry.price - minPrice) / priceRange) * containerHeight * 0.9
+                        : containerHeight * 0.5;
+                    
+                    // Calculate volume indicator height (smaller, at bottom)
+                    const volumeHeight = maxVolume > 0
+                        ? (entry.volume / maxVolume) * containerHeight * 0.2
+                        : 0;
+                    
+                    // Create bar element
+                    const bar = document.createElement('div');
+                    bar.className = `chart-bar bg-blue-500 rounded-t relative`;
+                    bar.style.width = `${barWidth}px`;
+                    bar.style.height = `${priceHeight}px`;
+                    bar.dataset.price = entry.price.toFixed(2);
+                    bar.dataset.date = this.formatDate(entry.date);
+                    bar.dataset.volume = entry.volume.toLocaleString();
+                    
+                    // Add pulse animation to the last bar (most recent data)
+                    if (index === data.length - 1) {
+                        bar.classList.add('pulse-animation');
+                    }
+                    
+                    // Create price label
+                    const priceLabel = document.createElement('div');
+                    priceLabel.className = 'price-label';
+                    priceLabel.textContent = `$${entry.price.toFixed(2)}`;
+                    bar.appendChild(priceLabel);
+                    
+                    // Create volume indicator
+                    const volumeIndicator = document.createElement('div');
+                    volumeIndicator.className = `absolute bottom-0 left-0 right-0 bg-gray-300 rounded-b`;
+                    volumeIndicator.style.height = `${volumeHeight}px`;
+                    
+                    bar.appendChild(volumeIndicator);
+                    this.elements.chartContainer.appendChild(bar);
+                    
+                    // Tooltip events
+                    bar.addEventListener('mouseenter', (e) => {
+                        const tooltip = this.elements.chartTooltip;
+                        tooltip.innerHTML = `
+                            <div class="font-bold">$${entry.price.toFixed(2)}</div>
+                            <div class="text-gray-300">${this.formatDate(entry.date)}</div>
+                            <div class="text-gray-300">Vol: ${entry.volume.toLocaleString()}</div>
+                        `;
+                        tooltip.style.left = `${e.target.offsetLeft + barWidth/2}px`;
+                        tooltip.style.top = `${e.target.offsetTop - 10}px`;
+                        tooltip.style.opacity = '1';
+                    });
+                    
+                    bar.addEventListener('mouseleave', () => {
+                        this.elements.chartTooltip.style.opacity = '0';
+                    });
+                });
+                
+                // Update date range labels
+                this.elements.startDate.textContent = this.formatDate(data[0].date, true);
+                this.elements.endDate.textContent = this.formatDate(data[data.length - 1].date, true);
+                
+                // Update current price if not already set
+                if (!this.elements.currentPrice.textContent.includes('$')) {
+                    this.updateCurrentPrice(data[data.length - 1].price, 0);
+                }
+                
+                // Update last updated time
+                this.updateLastUpdatedTime();
+            }
+            
+            formatDate(date, short = false) {
+                if (short) {
+                    return date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' });
+                }
+                return date.toLocaleDateString('pt-BR', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+        }
+        
+        // Initialize the chart when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new PriceChart();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrade - Plataforma de Créditos de Carbono</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .price-badge {
+            transition: all 0.3s ease;
+        }
+        .company-logo {
+            transition: all 0.3s ease;
+        }
+        .animated-button {
+            position: relative;
+            overflow: hidden;
+        }
+        .animated-button:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        .animated-button:hover:after {
+            left: 100%;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse-icon {
+            animation: pulse 2s infinite;
+        }
+        .modal {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .forum-post {
+            transition: all 0.2s ease;
+        }
+        .forum-post:hover {
+            background-color: #f8fafc;
+        }
+        .tab-active {
+            border-bottom: 3px solid #10B981;
+            color: #065F46;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-leaf text-3xl"></i>
+                    <h1 class="text-2xl font-bold">Zelto Soluções</h1>
+                </div>
+                <a href="../Index.html">
+                    <button class="bg-white text-emerald-600 border border-emerald-600 font-bold px-6 py-2 rounded-full hover:bg-emerald-100 transition duration-300">
+                        Página Inicial
+                    </button>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Market Overview -->
+        <section class="mb-12">
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
+                        Mercado de Créditos de Carbono
+                        <span class="text-green-600">em Tempo Real</span>
+                    </h2>
+                    <div class="flex space-x-4">
+                        <div class="bg-green-50 text-green-800 px-4 py-2 rounded-lg">
+                            <div class="text-sm font-medium">Preço Médio</div>
+                            <div class="font-bold">R$ 86,45 <span class="text-green-600 text-sm">+1.2%</span></div>
+                        </div>
+                        <div class="bg-blue-50 text-blue-800 px-4 py-2 rounded-lg">
+                            <div class="text-sm font-medium">Volume 24h</div>
+                            <div class="font-bold">12.4K <span class="text-sm">créditos</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Buyers -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold mb-6 flex items-center">
+                            <span class="bg-green-600 text-white p-2 rounded-full mr-3">
+                                <i class="fas fa-shopping-cart"></i>
+                            </span>
+                            Empresas Comprando Créditos
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Buyer 1 -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center card-hover">
+                                <img src="https://logo.clearbit.com/natura.com" alt="Natura" class="w-12 h-12 rounded-full mr-4 company-logo">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">Natura</h4>
+                                    <p class="text-sm text-gray-600">Procurando 5,000 créditos para neutralizar operações</p>
+                                </div>
+                                <div class="ml-auto text-green-600 font-bold">R$ 86,50</div>
+                                <button class="ml-4 bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-200 transition simulate-btn" data-company="Natura" data-price="86.50">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Buyer 2 -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center card-hover">
+                                <img src="https://logo.clearbit.com/itau.com.br" alt="Itaú" class="w-12 h-12 rounded-full mr-4 company-logo">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">Itaú</h4>
+                                    <p class="text-sm text-gray-600">Necessita 10,000 créditos para meta ESG 2023</p>
+                                </div>
+                                <div class="ml-auto text-green-600 font-bold">R$ 87,20</div>
+                                <button class="ml-4 bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-200 transition simulate-btn" data-company="Itaú" data-price="87.20">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Buyer 3 -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center card-hover">
+                                <img src="https://logo.clearbit.com/vale.com" alt="Vale" class="w-12 h-12 rounded-full mr-4 company-logo">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">Vale</h4>
+                                    <p class="text-sm text-gray-600">Compra de 15,000 créditos para compensação</p>
+                                </div>
+                                <div class="ml-auto text-green-600 font-bold">R$ 85,00</div>
+                                <button class="ml-4 bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-200 transition simulate-btn" data-company="Vale" data-price="85.00">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sellers -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold mb-6 flex items-center">
+                            <span class="bg-blue-600 text-white p-2 rounded-full mr-3">
+                                <i class="fas fa-tag"></i>
+                            </span>
+                            Empresas Vendendo Créditos
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Seller 1 -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center card-hover">
+                                <img src="https://logo.clearbit.com/suzano.com.br" alt="Suzano" class="w-12 h-12 rounded-full mr-4 company-logo">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">Suzano</h4>
+                                    <p class="text-sm text-gray-600">Oferece 8,000 créditos de reflorestamento</p>
+                                </div>
+                                <div class="ml-auto text-green-600 font-bold">R$ 86,00</div>
+                                <button class="ml-4 bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-200 transition simulate-btn" data-company="Suzano" data-price="86.00">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Seller 2 -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center card-hover">
+                                <img src="https://logo.clearbit.com/energisa.com.br" alt="Energisa" class="w-12 h-12 rounded-full mr-4 company-logo">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">Energisa</h4>
+                                    <p class="text-sm text-gray-600">Venda de 3,500 créditos de energia eólica</p>
+                                </div>
+                                <div class="ml-auto text-green-600 font-bold">R$ 88,50</div>
+                                <button class="ml-4 bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-200 transition simulate-btn" data-company="Energisa" data-price="88.50">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Seller 3 -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center card-hover">
+                                <img src="https://logo.clearbit.com/brf.com.br" alt="BRF" class="w-12 h-12 rounded-full mr-4 company-logo">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">BRF</h4>
+                                    <p class="text-sm text-gray-600">Disponível 6,200 créditos de gestão de resíduos</p>
+                                </div>
+                                <div class="ml-auto text-green-600 font-bold">R$ 84,75</div>
+                                <button class="ml-4 bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-200 transition simulate-btn" data-company="BRF" data-price="84.75">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Tabs -->
+        <section class="mb-12">
+            <div class="flex border-b border-gray-200 mb-6">
+                <button id="buy-tab" class="px-6 py-3 text-gray-600 tab-active">
+                    <i class="fas fa-shopping-cart mr-2"></i> Comprar Créditos
+                </button>
+                <button id="sell-tab" class="px-6 py-3 text-gray-600">
+                    <i class="fas fa-tag mr-2"></i> Vender Créditos
+                </button>
+                <button id="forum-tab" class="px-6 py-3 text-gray-600">
+                    <i class="fas fa-comments mr-2"></i> Fórum de Negociação
+                </button>
+            </div>
+
+            <!-- Buy Section -->
+            <div id="buy-section">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Filter Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Filtrar Ofertas</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Crédito</label>
+                                <select id="credit-type" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                                    <option>Todos</option>
+                                    <option>Reflorestamento</option>
+                                    <option>Energia Renovável</option>
+                                    <option>Eficiência Energética</option>
+                                    <option>Gestão de Resíduos</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Preço (por crédito)</label>
+                                <div class="flex items-center space-x-2">
+                                    <input id="min-price" type="number" placeholder="Mínimo" class="w-1/2 p-2 border border-gray-300 rounded-md">
+                                    <input id="max-price" type="number" placeholder="Máximo" class="w-1/2 p-2 border border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+                                <input id="desired-quantity" type="number" placeholder="Quantidade desejada" class="w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Certificação</label>
+                                <select id="certification" class="w-full p-2 border border-gray-300 rounded-md">
+                                    <option>Todas</option>
+                                    <option>VERRA</option>
+                                    <option>GOLD STANDARD</option>
+                                    <option>CCB</option>
+                                    <option>Outra</option>
+                                </select>
+                            </div>
+                            <button id="apply-filters" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition animated-button">
+                                Aplicar Filtros
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Offers List -->
+                    <div class="lg:col-span-2 space-y-4" id="offers-container">
+                        <!-- Offers will be loaded here from API -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sell Section (Hidden by default) -->
+            <div id="sell-section" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Sell Form -->
+                    <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Oferecer Créditos</h3>
+                        <form id="sell-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Crédito</label>
+                                <select id="sell-credit-type" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                                    <option>Selecione...</option>
+                                    <option>Reflorestamento</option>
+                                    <option>Energia Renovável</option>
+                                    <option>Eficiência Energética</option>
+                                    <option>Gestão de Resíduos</option>
+                                    <option>Outro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade de Créditos</label>
+                                <input id="sell-quantity" type="number" placeholder="Quantidade disponível" class="w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Preço por Crédito (R$)</label>
+                                <input id="sell-price" type="number" placeholder="Valor unitário" class="w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Certificação</label>
+                                <select id="sell-certification" class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                                    <option>Selecione...</option>
+                                    <option>VERRA</option>
+                                    <option>GOLD STANDARD</option>
+                                    <option>CCB</option>
+                                    <option>Outra</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Descrição do Projeto</label>
+                                <textarea id="sell-description" rows="3" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Descreva seu projeto e os créditos oferecidos"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition animated-button">
+                                Publicar Oferta
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Sell Info -->
+                    <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Como Vender Créditos</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-green-100 text-green-800 rounded-full p-2 mr-3">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Verificação do Projeto</h4>
+                                    <p class="text-sm text-gray-600">Seu projeto será avaliado por nossa equipe para garantir a qualidade dos créditos.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-100 text-green-800 rounded-full p-2 mr-3">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Definição de Preço</h4>
+                                    <p class="text-sm text-gray-600">Nossa equipe ajuda você a definir o preço ideal baseado no mercado atual.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-100 text-green-800 rounded-full p-2 mr-3">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Negociação Segura</h4>
+                                    <p class="text-sm text-gray-600">Facilitamos todo o processo de negociação e garantimos a segurança da transação.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-100 text-green-800 rounded-full p-2 mr-3">
+                                    <i class="fas fa-file-contract"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Documentação</h4>
+                                    <p class="text-sm text-gray-600">Auxiliamos na geração de toda documentação necessária para a transferência dos créditos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                            <h4 class="font-medium text-blue-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Precisa de ajuda?</h4>
+                            <p class="text-sm text-blue-700">Nossa equipe está disponível para orientar você em todo o processo de venda de créditos.</p>
+                            <button class="mt-3 text-blue-600 text-sm font-medium hover:text-blue-800 transition">
+                                Fale com um especialista <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forum Section (Hidden by default) -->
+            <div id="forum-section" class="hidden">
+                <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Criar Nova Oferta no Fórum</h3>
+                    <form id="forum-post-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Oferta</label>
+                                <select id="post-type" class="w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="venda">Venda</option>
+                                    <option value="compra">Compra</option>
+                                    <option value="discussao">Discussão</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Crédito</label>
+                                <select id="post-credit-type" class="w-full p-2 border border-gray-300 rounded-md">
+                                    <option>Selecione...</option>
+                                    <option>Reflorestamento</option>
+                                    <option>Energia Renovável</option>
+                                    <option>Eficiência Energética</option>
+                                    <option>Gestão de Resíduos</option>
+                                    <option>Outro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+                            <input id="post-title" type="text" placeholder="Título da sua oferta" class="w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                            <textarea id="post-description" rows="3" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Descreva sua oferta ou discussão"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade (opcional)</label>
+                                <input id="post-quantity" type="number" placeholder="Quantidade de créditos" class="w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Preço (opcional)</label>
+                                <input id="post-price" type="number" placeholder="Preço por crédito" class="w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition animated-button">
+                            Publicar no Fórum
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Últimas Ofertas e Discussões</h3>
+                    <div id="forum-posts-container" class="space-y-4">
+                        <!-- Forum posts will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Por que usar nossa plataforma?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
+                    <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Segurança</h3>
+                    <p class="text-gray-600">Todas as transações são verificadas e acompanhadas por especialistas para garantir a legitimidade dos créditos.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
+                    <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-pie text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Transparência</h3>
+                    <p class="text-gray-600">Preços de mercado em tempo real e informações completas sobre cada projeto disponível.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
+                    <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bolt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Eficiência</h3>
+                    <p class="text-gray-600">Processo simplificado que conecta compradores e vendedores diretamente, reduzindo intermediários.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Simulation Modal -->
+    <div id="simulation-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="bg-white rounded-xl shadow-xl z-50 w-full max-w-md mx-4 modal">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Simular Proposta</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-md">
+                        <div class="flex items-center">
+                            <img id="modal-company-logo" src="" alt="" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <h4 id="modal-company-name" class="font-bold"></h4>
+                                <p id="modal-company-type" class="text-sm text-gray-600"></p>
+                            </div>
+                            <div class="ml-auto text-green-600 font-bold" id="modal-company-price"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade de Créditos</label>
+                        <input id="simulation-quantity" type="number" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Quantidade desejada">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Preço Sugerido (por crédito)</label>
+                        <input id="simulation-price" type="number" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Preço sugerido">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Taxas (%)</label>
+                        <input id="simulation-fees" type="number" value="2" class="w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-md">
+                        <h4 class="font-medium text-gray-800 mb-2">Resumo da Simulação</h4>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-600">Valor dos Créditos:</span>
+                            <span id="credit-value" class="font-medium">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-600">Taxas:</span>
+                            <span id="fee-value" class="font-medium">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-200 pt-2 mt-2">
+                            <span class="text-gray-800 font-medium">Total:</span>
+                            <span id="total-value" class="text-green-600 font-bold">R$ 0,00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <p class="text-sm text-yellow-700">
+                            <strong>⚠️ Aviso:</strong> Esta simulação é apenas ilustrativa. Valores reais dependem de negociação direta entre as partes.
+                        </p>
+                    </div>
+                    
+                    <div class="flex space-x-3 pt-2">
+                        <button id="send-interest" class="flex-1 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition animated-button">
+                            Enviar Interesse
+                        </button>
+                        <button id="cancel-simulation" class="flex-1 border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-50 transition">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-leaf mr-2"></i> Zelto Soluções
+                    </h3>
+                    <p class="text-gray-400">Conectando empresas a um futuro sustentável através do mercado de créditos de carbono.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Navegação</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Mercado</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Simulador</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Fórum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Recursos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Regulamento</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contato</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">contato@zeltosoluções.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">(67) 1234-5678</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">Campo Grande, Brasil</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 Zelto Soluções. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data for offers (in a real app, this would come from an API)
+        const sampleOffers = [
+            {
+                id: 1,
+                company: "Suzano Papel e Celulose",
+                logo: "https://logo.clearbit.com/suzano.com.br",
+                type: "Reflorestamento",
+                description: "Créditos de reflorestamento - Projeto Amazônia Sustentável",
+                price: 85.90,
+                quantity: 12500,
+                location: "Pará, Brasil",
+                certification: "VERRA",
+                timestamp: "2023-10-20T10:30:00Z"
+            },
+            {
+                id: 2,
+                company: "Energisa Renováveis",
+                logo: "https://logo.clearbit.com/energisa.com.br",
+                type: "Energia Renovável",
+                description: "Créditos de energia eólica - Parque Eólico Ventos do Sul",
+                price: 92.40,
+                quantity: 8200,
+                location: "Rio Grande do Sul, Brasil",
+                certification: "GOLD STANDARD",
+                timestamp: "2023-10-19T14:45:00Z"
+            },
+            {
+                id: 3,
+                company: "EcoResíduos",
+                logo: "https://logo.clearbit.com/ecoresiduos.com.br",
+                type: "Gestão de Resíduos",
+                description: "Créditos de gestão de resíduos - Aterro Sanitário Sustentável",
+                price: 78.30,
+                quantity: 6500,
+                location: "Minas Gerais, Brasil",
+                certification: "VERRA",
+                timestamp: "2023-10-18T09:15:00Z"
+            },
+            {
+                id: 4,
+                company: "Natura Cosméticos",
+                logo: "https://logo.clearbit.com/natura.com",
+                type: "Reflorestamento",
+                description: "Compra de créditos para neutralização de carbono",
+                price: 86.50,
+                quantity: 5000,
+                location: "São Paulo, Brasil",
+                certification: "VERRA",
+                timestamp: "2023-10-20T08:20:00Z"
+            },
+            {
+                id: 5,
+                company: "Itaú Unibanco",
+                logo: "https://logo.clearbit.com/itau.com.br",
+                type: "Compensação Corporativa",
+                description: "Necessita créditos para meta ESG 2023",
+                price: 87.20,
+                quantity: 10000,
+                location: "São Paulo, Brasil",
+                certification: "GOLD STANDARD",
+                timestamp: "2023-10-19T11:10:00Z"
+            }
+        ];
+
+        // Sample data for forum posts (in a real app, this would come from a database)
+        const sampleForumPosts = [
+            {
+                id: 1,
+                type: "venda",
+                title: "Vendo 500 créditos VERRA de reflorestamento",
+                description: "Disponível 500 créditos certificados VERRA provenientes de projeto de reflorestamento na Amazônia. Preço negociável.",
+                creditType: "Reflorestamento",
+                price: 85.00,
+                quantity: 500,
+                user: "empresa_verde@email.com",
+                date: "2023-10-20",
+                comments: [
+                    {
+                        id: 1,
+                        user: "comprador_sustentavel@email.com",
+                        text: "Tem interesse em vender apenas 200 créditos?",
+                        date: "2023-10-20"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                type: "compra",
+                title: "Procurando créditos de energia eólica",
+                description: "Precisamos de 1.200 créditos de energia eólica certificados GOLD STANDARD para compensação corporativa. Orçamentos até 30/10.",
+                creditType: "Energia Renovável",
+                price: 95.00,
+                quantity: 1200,
+                user: "corporacao_eco@email.com",
+                date: "2023-10-19",
+                comments: []
+            },
+            {
+                id: 3,
+                type: "discussao",
+                title: "Mercado de créditos em 2024 - Perspectivas",
+                description: "O que acham que vai acontecer com os preços dos créditos no próximo ano? Alguma previsão ou tendência que estejam acompanhando?",
+                creditType: "Geral",
+                user: "analista_mercado@email.com",
+                date: "2023-10-18",
+                comments: [
+                    {
+                        id: 2,
+                        user: "consultor_ambiental@email.com",
+                        text: "Acredito que os preços vão subir com a nova regulamentação europeia.",
+                        date: "2023-10-18"
+                    },
+                    {
+                        id: 3,
+                        user: "gestor_projetos@email.com",
+                        text: "Estamos vendo aumento na demanda, especialmente para créditos com benefícios sociais.",
+                        date: "2023-10-19"
+                    }
+                ]
+            }
+        ];
+
+        // Current offer being simulated
+        let currentOffer = null;
+
+        // DOM Elements
+        const buyTab = document.getElementById('buy-tab');
+        const sellTab = document.getElementById('sell-tab');
+        const forumTab = document.getElementById('forum-tab');
+        const buySection = document.getElementById('buy-section');
+        const sellSection = document.getElementById('sell-section');
+        const forumSection = document.getElementById('forum-section');
+        const offersContainer = document.getElementById('offers-container');
+        const forumPostsContainer = document.getElementById('forum-posts-container');
+        const simulationModal = document.getElementById('simulation-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const cancelSimulationBtn = document.getElementById('cancel-simulation');
+        const simulationQuantity = document.getElementById('simulation-quantity');
+        const simulationPrice = document.getElementById('simulation-price');
+        const simulationFees = document.getElementById('simulation-fees');
+        const creditValue = document.getElementById('credit-value');
+        const feeValue = document.getElementById('fee-value');
+        const totalValue = document.getElementById('total-value');
+        const sendInterestBtn = document.getElementById('send-interest');
+        const modalCompanyName = document.getElementById('modal-company-name');
+        const modalCompanyLogo = document.getElementById('modal-company-logo');
+        const modalCompanyType = document.getElementById('modal-company-type');
+        const modalCompanyPrice = document.getElementById('modal-company-price');
+        const forumPostForm = document.getElementById('forum-post-form');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load sample offers
+            renderOffers(sampleOffers);
+            
+            // Load sample forum posts
+            renderForumPosts(sampleForumPosts);
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Tab switching
+            buyTab.addEventListener('click', () => switchTab('buy'));
+            sellTab.addEventListener('click', () => switchTab('sell'));
+            forumTab.addEventListener('click', () => switchTab('forum'));
+            
+            // Modal controls
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelSimulationBtn.addEventListener('click', closeModal);
+            
+            // Simulation calculations
+            simulationQuantity.addEventListener('input', calculateSimulation);
+            simulationPrice.addEventListener('input', calculateSimulation);
+            simulationFees.addEventListener('input', calculateSimulation);
+            
+            // Send interest button
+            sendInterestBtn.addEventListener('click', sendInterest);
+            
+            // Forum post form
+            forumPostForm.addEventListener('submit', handleForumPostSubmit);
+            
+            // Apply filters button
+            document.getElementById('apply-filters').addEventListener('click', applyFilters);
+            
+            // Sell form submission
+            document.getElementById('sell-form').addEventListener('submit', handleSellFormSubmit);
+            
+            // Simulation buttons on company cards
+            document.querySelectorAll('.simulate-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const company = this.dataset.company;
+                    const price = parseFloat(this.dataset.price);
+                    const logo = this.closest('.card-hover').querySelector('.company-logo').src;
+                    
+                    openSimulationModal(company, price, logo);
+                });
+            });
+        }
+
+        // Switch between tabs
+        function switchTab(tab) {
+            buySection.classList.add('hidden');
+            sellSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
+            buyTab.classList.remove('tab-active');
+            sellTab.classList.remove('tab-active');
+            forumTab.classList.remove('tab-active');
+            
+            if (tab === 'buy') {
+                buySection.classList.remove('hidden');
+                buyTab.classList.add('tab-active');
+            } else if (tab === 'sell') {
+                sellSection.classList.remove('hidden');
+                sellTab.classList.add('tab-active');
+            } else if (tab === 'forum') {
+                forumSection.classList.remove('hidden');
+                forumTab.classList.add('tab-active');
+                
+                // Scroll to top of forum
+                window.scrollTo({
+                    top: forumSection.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Render offers to the DOM
+        function renderOffers(offers) {
+            offersContainer.innerHTML = '';
+            
+            if (offers.length === 0) {
+                offersContainer.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                        <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma oferta encontrada</h3>
+                        <p class="text-gray-600">Tente ajustar seus filtros de busca.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            offers.forEach(offer => {
+                const offerElement = document.createElement('div');
+                offerElement.className = 'bg-white p-6 rounded-xl shadow-md card-hover offer-card';
+                offerElement.dataset.id = offer.id;
+                offerElement.dataset.type = offer.type;
+                offerElement.dataset.price = offer.price;
+                offerElement.dataset.quantity = offer.quantity;
+                offerElement.dataset.certification = offer.certification;
+                
+                offerElement.innerHTML = `
+                    <div class="flex items-start">
+                        <img src="${offer.logo}" alt="${offer.company}" class="w-16 h-16 rounded-full mr-4 company-logo">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-lg text-gray-800">${offer.company}</h3>
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium price-badge">
+                                    R$ ${offer.price.toFixed(2)} / crédito
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mt-1">${offer.description}</p>
+                            <div class="mt-3 flex flex-wrap items-center text-sm text-gray-500 gap-y-2">
+                                <span class="mr-4"><i class="fas ${getTypeIcon(offer.type)} mr-1"></i> ${offer.type}</span>
+                                <span class="mr-4"><i class="fas fa-database mr-1"></i> ${offer.quantity.toLocaleString()} créditos</span>
+                                <span><i class="fas fa-map-marker-alt mr-1"></i> ${offer.location}</span>
+                            </div>
+                            <div class="mt-4 flex justify-between items-center">
+                                <div>
+                                    <span class="text-sm text-gray-500">Certificação:</span>
+                                    <span class="ml-2 ${getCertificationClass(offer.certification)} px-2 py-1 rounded text-xs font-medium">${offer.certification}</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="bg-green-100 text-green-600 px-4 py-2 rounded-md text-sm hover:bg-green-200 transition simulate-btn" data-company="${offer.company}" data-price="${offer.price}">
+                                        <i class="fas fa-calculator mr-1"></i> Simular
+                                    </button>
+                                    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-md text-sm hover:bg-gray-200 transition forum-btn" data-company="${offer.company}">
+                                        <i class="fas fa-comments mr-1"></i> Fórum
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                offersContainer.appendChild(offerElement);
+            });
+            
+            // Add event listeners to all simulate buttons
+            document.querySelectorAll('.simulate-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.offer-card');
+                    const offerId = parseInt(card.dataset.id);
+                    currentOffer = sampleOffers.find(o => o.id === offerId);
+                    openModal();
+                });
+            });
+            
+            // Add event listeners to all forum buttons
+            document.querySelectorAll('.forum-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    switchTab('forum');
+                });
+            });
+        }
+
+        // Render forum posts to the DOM
+        function renderForumPosts(posts) {
+            forumPostsContainer.innerHTML = '';
+            
+            if (posts.length === 0) {
+                forumPostsContainer.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                        <i class="fas fa-comments text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma discussão encontrada</h3>
+                        <p class="text-gray-600">Seja o primeiro a criar uma publicação!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'bg-white p-6 rounded-lg border border-gray-200 forum-post';
+                postElement.dataset.id = post.id;
+                
+                // Determine badge color based on post type
+                let badgeClass = '';
+                if (post.type === 'venda') {
+                    badgeClass = 'bg-red-100 text-red-800';
+                } else if (post.type === 'compra') {
+                    badgeClass = 'bg-blue-100 text-blue-800';
+                } else {
+                    badgeClass = 'bg-gray-100 text-gray-800';
+                }
+                
+                postElement.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-lg text-gray-800">${post.title}</h4>
+                        <span class="${badgeClass} px-3 py-1 rounded-full text-xs font-medium capitalize">
+                            ${post.type}
+                        </span>
+                    </div>
+                    ${post.creditType ? `<p class="text-sm text-gray-600 mb-2"><i class="fas ${getTypeIcon(post.creditType)} mr-1"></i> ${post.creditType}</p>` : ''}
+                    ${post.price ? `<p class="text-sm text-gray-800 mb-2"><strong>Preço:</strong> R$ ${post.price.toFixed(2)} por crédito</p>` : ''}
+                    ${post.quantity ? `<p class="text-sm text-gray-800 mb-2"><strong>Quantidade:</strong> ${post.quantity.toLocaleString()} créditos</p>` : ''}
+                    <p class="text-gray-700 mb-4">${post.description}</p>
+                    <div class="flex justify-between items-center text-sm text-gray-500">
+                        <span>Postado por: ${post.user}</span>
+                        <span>${formatDate(post.date)}</span>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-4">
+                        <h5 class="font-medium text-gray-800 mb-2">Comentários (${post.comments ? post.comments.length : 0})</h5>
+                        ${post.comments && post.comments.length > 0 ? 
+                            post.comments.map(comment => `
+                                <div class="bg-gray-50 p-3 rounded-lg mb-2">
+                                    <div class="flex justify-between text-sm">
+                                        <span class="font-medium">${comment.user}</span>
+                                        <span>${formatDate(comment.date)}</span>
+                                    </div>
+                                    <p class="text-gray-700 mt-1">${comment.text}</p>
+                                </div>
+                            `).join('') : 
+                            '<p class="text-sm text-gray-500">Nenhum comentário ainda.</p>'
+                        }
+                        <div class="mt-3 flex">
+                            <input type="text" placeholder="Adicionar comentário..." class="flex-1 border border-gray-300 rounded-l-md p-2 text-sm">
+                            <button class="bg-green-600 text-white px-3 rounded-r-md text-sm hover:bg-green-700 transition">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                forumPostsContainer.appendChild(postElement);
+            });
+        }
+
+        // Open simulation modal with company data
+        function openSimulationModal(company, price, logo) {
+            modalCompanyName.textContent = company;
+            modalCompanyLogo.src = logo;
+            modalCompanyLogo.alt = company;
+            modalCompanyType.textContent = company.includes('Natura') || company.includes('Itaú') || company.includes('Vale') ? 
+                                          'Compra de créditos' : 'Venda de créditos';
+            modalCompanyPrice.textContent = `R$ ${price.toFixed(2)}`;
+            
+            // Set default values
+            simulationPrice.value = price.toFixed(2);
+            simulationQuantity.value = '';
+            simulationFees.value = '2';
+            
+            // Open modal
+            simulationModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Calculate initial values
+            calculateSimulation();
+        }
+
+        // Close simulation modal
+        function closeModal() {
+            simulationModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentOffer = null;
+        }
+
+        // Calculate simulation values
+        function calculateSimulation() {
+            const quantity = parseFloat(simulationQuantity.value) || 0;
+            const price = parseFloat(simulationPrice.value) || 0;
+            const feesPercent = parseFloat(simulationFees.value) || 0;
+            
+            const creditTotal = quantity * price;
+            const feesTotal = creditTotal * (feesPercent / 100);
+            const total = creditTotal + feesTotal;
+            
+            creditValue.textContent = `R$ ${creditTotal.toFixed(2)}`;
+            feeValue.textContent = `R$ ${feesTotal.toFixed(2)}`;
+            totalValue.textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        // Send interest (simulated)
+        function sendInterest() {
+            const quantity = parseFloat(simulationQuantity.value) || 0;
+            const price = parseFloat(simulationPrice.value) || 0;
+            
+            if (quantity <= 0 || price <= 0) {
+                alert('Por favor, preencha quantidade e preço válidos.');
+                return;
+            }
+            
+            // In a real app, this would send data to a backend
+            alert(`Interesse enviado para ${modalCompanyName.textContent}:\n\n` +
+                  `Créditos: ${quantity}\n` +
+                  `Preço por crédito: R$ ${price.toFixed(2)}\n` +
+                  `Total: ${totalValue.textContent}\n\n` +
+                  `Você receberá um e-mail com os próximos passos.`);
+            
+            closeModal();
+        }
+
+        // Handle forum post submission
+        function handleForumPostSubmit(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('post-title').value;
+            const description = document.getElementById('post-description').value;
+            
+            if (!title || !description) {
+                alert('Por favor, preencha título e descrição.');
+                return;
+            }
+            
+            // Create new post object
+            const newPost = {
+                id: sampleForumPosts.length + 1,
+                type: document.getElementById('post-type').value,
+                title: title,
+                description: description,
+                creditType: document.getElementById('post-credit-type').value,
+                price: parseFloat(document.getElementById('post-price').value) || null,
+                quantity: parseInt(document.getElementById('post-quantity').value) || null,
+                user: "usuário_logado@email.com",
+                date: new Date().toISOString().split('T')[0],
+                comments: []
+            };
+            
+            // Add to posts array and re-render
+            sampleForumPosts.unshift(newPost);
+            renderForumPosts(sampleForumPosts);
+            
+            // Reset form
+            forumPostForm.reset();
+            
+            // Scroll to top of forum
+            window.scrollTo({
+                top: forumSection.offsetTop - 20,
+                behavior: 'smooth'
+            });
+            
+            alert('Post criado com sucesso!');
+        }
+
+        // Handle sell form submission
+        function handleSellFormSubmit(e) {
+            e.preventDefault();
+            
+            const creditType = document.getElementById('sell-credit-type').value;
+            const quantity = document.getElementById('sell-quantity').value;
+            const price = document.getElementById('sell-price').value;
+            const certification = document.getElementById('sell-certification').value;
+            const description = document.getElementById('sell-description').value;
+            
+            if (!creditType || !quantity || !price || !certification || !description) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            // In a real app, this would send data to a backend
+            alert(`Oferta de venda enviada para análise:\n\n` +
+                  `Tipo: ${creditType}\n` +
+                  `Quantidade: ${quantity} créditos\n` +
+                  `Preço: R$ ${parseFloat(price).toFixed(2)} por crédito\n` +
+                  `Certificação: ${certification}\n\n` +
+                  `Nossa equipe entrará em contato em breve.`);
+            
+            // Reset form
+            e.target.reset();
+        }
+
+        // Apply filters to offers
+        function applyFilters() {
+            const creditType = document.getElementById('credit-type').value;
+            const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+            const desiredQuantity = parseFloat(document.getElementById('desired-quantity').value) || 0;
+            const certification = document.getElementById('certification').value;
+            
+            const filteredOffers = sampleOffers.filter(offer => {
+                const typeMatch = creditType === 'Todos' || offer.type === creditType;
+                const priceMatch = offer.price >= minPrice && offer.price <= maxPrice;
+                const quantityMatch = desiredQuantity === 0 || offer.quantity >= desiredQuantity;
+                const certificationMatch = certification === 'Todas' || offer.certification === certification;
+                
+                return typeMatch && priceMatch && quantityMatch && certificationMatch;
+            });
+            
+            renderOffers(filteredOffers);
+        }
+
+        // Helper function to get icon based on credit type
+        function getTypeIcon(type) {
+            switch(type) {
+                case 'Reflorestamento': return 'fa-tree';
+                case 'Energia Renovável': return 'fa-wind';
+                case 'Eficiência Energética': return 'fa-bolt';
+                case 'Gestão de Resíduos': return 'fa-trash-alt';
+                default: return 'fa-leaf';
+            }
+        }
+
+        // Helper function to get certification badge class
+        function getCertificationClass(certification) {
+            switch(certification) {
+                case 'VERRA': return 'bg-blue-100 text-blue-800';
+                case 'GOLD STANDARD': return 'bg-purple-100 text-purple-800';
+                case 'CCB': return 'bg-green-100 text-green-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        // Helper function to format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('pt-BR', options);
+        }
+    </script>
+</body>
+</html>
